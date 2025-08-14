@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stanford Books - Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Admin bar (shown after login) -->
+    <div id="adminBar" class="admin-bar" style="display: none;">
+        <p>Logged in as <span id="adminName"></span></p>
+        <a href="#" id="logoutBtn">Logout</a>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1>STANFORD BOOKS</h1>
+            <p class="tagline">Your library, anytime, anywhere.</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="admin.html" class="active">Admin</a></li>
+                <li><a href="available.html">Books Available</a></li>
+                <li><a href="unavailable.html">Books Unavailable</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Login Section (shown when not logged in) -->
+        <section id="loginSection" class="login-section">
+            <div class="login-container">
+                <h2>Admin Login</h2>
+                <p id="loginError" class="error-message"></p>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Admin Content (shown after login) -->
+        <section id="adminContent" class="admin-section" style="display: none;">
+            <h2>Admin Portal</h2>
+            
+            <div class="admin-panels">
+                <div class="admin-panel">
+                    <h3>User Lookup</h3>
+                    <form id="admin-user-search">
+                        <div class="form-group">
+                            <label for="user-id">User ID:</label>
+                            <input type="text" id="user-id" placeholder="Enter user ID..." required>
+                        </div>
+                        <button type="submit">Search</button>
+                    </form>
+                    <div id="admin-search-results"></div>
+                </div>
+                
+                <div class="admin-panel">
+                    <h3>Borrowing History</h3>
+                    <div id="borrowing-history">
+                        <p>Search for a user to view their borrowing history.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-panel full-width">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button id="add-book">Add New Book</button>
+                    <button id="manage-users">Manage Users</button>
+                    <button id="generate-reports">Generate Reports</button>
+                </div>
+            </div>
+
+            <!-- Add Book Modal -->
+            <div id="addBookModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Add New Book</h2>
+                    <form id="addBookForm">
+                        <div class="form-group">
+                            <label for="book-title">Title:</label>
+                            <input type="text" id="book-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-author">Author:</label>
+                            <input type="text" id="book-author" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-isbn">ISBN:</label>
+                            <input type="text" id="book-isbn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-year">Publication Year:</label>
+                            <input type="number" id="book-year" min="1000" max="2099">
+                        </div>
+                        <div class="form-group">
+                            <label for="book-publisher">Publisher:</label>
+                            <input type="text" id="book-publisher">
+                        </div>
+                        <div class="form-group">
+                            <label for="book-category">Category:</label>
+                            <input type="text" id="book-category">
+                        </div>
+                        <div class="form-group">
+                            <label for="book-copies">Number of Copies:</label>
+                            <input type="number" id="book-copies" min="1" value="1">
+                        </div>
+                        <button type="submit">Add Book</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Stanford Books Library Management System</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if admin is already logged in
+            checkAdminLogin();
+
+            // Login form submission
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                adminLogin(username, password);
+            });
+
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                adminLogout();
+            });
+
+            // Admin user search
+            document.getElementById('admin-user-search').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const userId = document.getElementById('user-id').value;
+                searchAdminUser(userId);
+            });
+
+            // Quick action buttons
+            document.getElementById('add-book').addEventListener('click', function() {
+                document.getElementById('addBookModal').style.display = 'block';
+            });
+
+            document.getElementById('manage-users').addEventListener('click', function() {
+                alert('User management functionality would open here.');
+            });
+
+            document.getElementById('generate-reports').addEventListener('click', function() {
+                alert('Report generation functionality would open here.');
+            });
+
+            // Modal close button
+            document.querySelector('.close').addEventListener('click', function() {
+                document.getElementById('addBookModal').style.display = 'none';
+            });
+
+            // Add book form
+            document.getElementById('addBookForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewBook();
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('addBookModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        function checkAdminLogin() {
+            // Check session storage for login status
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                showAdminContent();
+                document.getElementById('adminName').textContent = sessionStorage.getItem('adminName');
+            } else {
+                showLoginSection();
+            }
+        }
+
+        function adminLogin(username, password) {
+            const errorElement = document.getElementById('loginError');
+            errorElement.textContent = '';
+            
+            fetch('data.php?action=admin_login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store login info in session storage
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    sessionStorage.setItem('adminId', data.admin_id);
+                    sessionStorage.setItem('adminName', data.full_name);
+                    sessionStorage.setItem('accessLevel', data.access_level);
+                    
+                    // Show admin content
+                    showAdminContent();
+                    document.getElementById('adminName').textContent = data.full_name;
+                } else {
+                    errorElement.textContent = data.message || 'Invalid username or password';
+                }
+            })
+            .catch(error => {
+                errorElement.textContent = 'Login failed. Please try again.';
+                console.error('Login error:', error);
+            });
+        }
+
+        function adminLogout() {
+            // Clear session storage
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('adminId');
+            sessionStorage.removeItem('adminName');
+            sessionStorage.removeItem('accessLevel');
+            
+            // Show login section
+            showLoginSection();
+        }
+
+        function showAdminContent() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            document.getElementById('adminBar').style.display = 'flex';
+        }
+
+        function showLoginSection() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('adminBar').style.display = 'none';
+        }
+
+        function searchAdminUser(userId) {
+            const resultsDiv = document.getElementById('admin-search-results');
+            const historyDiv = document.getElementById('borrowing-history');
+            
+            resultsDiv.innerHTML = '<p>Searching for user ID: ' + userId + '...</p>';
+            historyDiv.innerHTML = '<p>Loading history for user ID: ' + userId + '...</p>';
+            
+            fetch(`data.php?action=admin_search&user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        resultsDiv.innerHTML = `<p class="error">${data.message}</p>`;
+                        historyDiv.innerHTML = '<p>User not found.</p>';
+                        return;
+                    }
+                    
+                    resultsDiv.innerHTML = `
+                        <div class="user-result">
+                            <h4>User Details</h4>
+                            <p><strong>ID:</strong> ${data.data.id}</p>
+                            <p><strong>Name:</strong> ${data.data.name}</p>
+                            <p><strong>Email:</strong> ${data.data.email}</p>
+                            <p><strong>Phone:</strong> ${data.data.phone || 'N/A'}</p>
+                            <p><strong>Member Since:</strong> ${data.data.member_since}</p>
+                        </div>
+                    `;
+                    
+                    // Now get borrowing history
+                    return fetch(`data.php?action=borrowing_history&user_id=${userId}`);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        historyDiv.innerHTML = `<p class="error">${data.message}</p>`;
+                        return;
+                    }
+                    
+                    if (data.data.length === 0) {
+                        historyDiv.innerHTML = '<p>No borrowing history found for this user.</p>';
+                        return;
+                    }
+                    
+                    let historyHTML = '<h4>Borrowing History</h4><table><tr><th>Book</th><th>Borrowed</th><th>Due</th><th>Returned</th><th>Status</th></tr>';
+                    
+                    data.data.forEach(record => {
+                        historyHTML += `
+                            <tr>
+                                <td>${record.book}</td>
+                                <td>${record.borrow_date}</td>
+                                <td>${record.due_date}</td>
+                                <td>${record.return_date || 'Not returned'}</td>
+                                <td class="status-${record.status}">${record.status}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    historyHTML += '</table>';
+                    historyDiv.innerHTML = historyHTML;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    historyDiv.innerHTML = '<p class="error">Error loading borrowing history.</p>';
+                });
+        }
+
+        function addNewBook() {
+            const title = document.getElementById('book-title').value;
+            const author = document.getElementById('book-author').value;
+            const isbn = document.getElementById('book-isbn').value;
+            const year = document.getElementById('book-year').value;
+            const publisher = document.getElementById('book-publisher').value;
+            const category = document.getElementById('book-category').value;
+            const copies = document.getElementById('book-copies').value;
+            
+            const params = new URLSearchParams();
+            params.append('title', title);
+            params.append('author', author);
+            params.append('isbn', isbn);
+            if (year) params.append('year', year);
+            if (publisher) params.append('publisher', publisher);
+            if (category) params.append('category', category);
+            params.append('copies', copies);
+            
+            fetch('data.php?action=add_book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Book added successfully!');
+                    document.getElementById('addBookModal').style.display = 'none';
+                    document.getElementById('addBookForm').reset();
+                } else {
+                    alert('Error adding book: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding book. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

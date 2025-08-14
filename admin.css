@@ -1,0 +1,264 @@
+/* ======== General Layout ======== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f6fa;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ======== Header ======== */
+header {
+    background-color: #34495e;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+header .tagline {
+    font-size: 0.9em;
+    color: #ecf0f1;
+}
+
+/* ======== Navigation ======== */
+nav {
+    background-color: #2c3e50;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.nav-btn {
+    background-color: transparent;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+    background-color: #1abc9c;
+}
+
+.nav-btn.active {
+    background-color: #16a085;
+}
+
+/* ======== Dashboard Section ======== */
+.admin-dashboard h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ======== Stats Overview ======== */
+.stats-overview {
+    margin: 20px 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* ======== Tabs ======== */
+.search-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    flex: 1;
+    background-color: #ecf0f1;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.tab-btn.active {
+    background-color: #1abc9c;
+    color: white;
+}
+
+.tab-btn:hover {
+    background-color: #16a085;
+    color: white;
+}
+
+/* ======== Tab Content ======== */
+.tab-content {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ======== Search & Forms ======== */
+.search-section,
+.management-section {
+    margin-bottom: 20px;
+}
+
+.search-form,
+.action-form,
+.add-book-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-input,
+.add-book-form input,
+.action-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-btn,
+.add-btn,
+.action-btn {
+    padding: 8px 14px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover,
+.add-btn:hover,
+.action-btn:hover {
+    background-color: #2980b9;
+}
+
+.borrow-btn {
+    background-color: #27ae60;
+}
+
+.borrow-btn:hover {
+    background-color: #1e8449;
+}
+
+.return-btn {
+    background-color: #e67e22;
+}
+
+.return-btn:hover {
+    background-color: #ca6f1e;
+}
+
+/* ======== Results Section ======== */
+.results-section {
+    margin-top: 15px;
+}
+
+.user-result {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* ======== Overdue Books ======== */
+.overdue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.overdue-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff3f3;
+    padding: 10px;
+    border-left: 5px solid #e74c3c;
+    border-radius: 4px;
+}
+
+.status-badge.overdue {
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+/* ======== Recent Activity ======== */
+.recent-activity {
+    margin-top: 20px;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.activity-item {
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.activity-time {
+    color: #888;
+}
+
+/* ======== Footer ======== */
+footer {
+    background-color: #34495e;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 30px;
+}

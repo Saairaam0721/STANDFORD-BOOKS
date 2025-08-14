@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stanford Books - Library Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>STANFORD BOOKS</h1>
+                <p class="tagline">Your library, anytime, anywhere.</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showPage('home')">Home</button>
+                <button class="nav-btn" onclick="window.location.href='admin.php'">Admin</button>
+                <button class="nav-btn" onclick="showPage('available')">Books Available</button>
+                <button class="nav-btn" onclick="showPage('unavailable')">Books Unavailable</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <h2>Welcome to Stanford Books</h2>
+                <div class="welcome-content">
+                    <p>Discover your next great read in our comprehensive digital library</p>
+                </div>
+                
+                <div class="search-section">
+                    <h3>Find a User</h3>
+                    <div class="search-form">
+                        <input type="text" id="userNameSearch" class="search-input" placeholder="Enter user name..." />
+                        <button class="search-btn" onclick="searchUserByName()">Search User</button>
+                    </div>
+                </div>
+
+                <div id="userSearchResults" class="results-section" style="display: none;">
+                    <h4>Search Results:</h4>
+                    <div id="userResultsContainer"></div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">2,456</span>
+                        <span class="stat-label">Total Books</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">1,892</span>
+                        <span class="stat-label">Available Books</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">564</span>
+                        <span class="stat-label">Borrowed Books</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">1,234</span>
+                        <span class="stat-label">Active Members</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books Available Page -->
+            <div id="available" class="page">
+                <h2>Available Books</h2>
+                <p class="page-description">Browse our collection of currently available books</p>
+                
+                <div class="books-grid" id="availableBooksGrid">
+                    <!-- Available books will be populated here -->
+                </div>
+            </div>
+
+            <!-- Books Unavailable Page -->
+            <div id="unavailable" class="page">
+                <h2>Currently Borrowed Books</h2>
+                <p class="page-description">Books currently on loan to our members</p>
+                
+                <div class="books-grid" id="unavailableBooksGrid">
+                    <!-- Unavailable books will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Stanford Books. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
